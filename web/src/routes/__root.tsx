@@ -2,7 +2,7 @@ import { createRootRoute, Link, Outlet } from '@tanstack/react-router'
 
 const RootLayout = () => (
     <>
-        <div className="p-2 flex gap-2">
+        <div className="p-2 flex gap-2 bg-green-500">
             <Link to="/" className="[&.active]:font-bold">
                 Home
             </Link>{' '}
