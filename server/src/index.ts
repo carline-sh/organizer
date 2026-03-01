@@ -3,7 +3,7 @@ import express from 'express'
 import { writeFile } from 'fs/promises';
 import { readFileSync } from 'fs';
 
-type Product = { id: number, name: string, price: number };
+type Product = { product_id: number, name: string, tags: string[] };
 
 const loadShoppingList = () => {
     try {
@@ -12,9 +12,9 @@ const loadShoppingList = () => {
     } catch (error) {
         console.error('Failed to load shopping list', error);
         return [
-            { id: 1, name: 'Milk', price: 1.99 },
-            { id: 2, name: 'Bread', price: 2.99 },
-            { id: 3, name: 'Eggs', price: 3.99 },
+            { product_id: 1, name: 'Milk', tags: ['supermarkt'] },
+            { product_id: 2, name: 'Bread', tags: ['supermarkt'] },
+            { product_id: 3, name: 'Eggs', tags: ['supermarkt'] },
         ];
     }
 };
@@ -42,7 +42,7 @@ app.post('/shopping-list', async (req, res) => {
     // add the thing to shoppinglist
 
     const item = req.body;
-    item.id = Math.round(Math.random() * 1000000);
+    item.product_id = Math.round(Math.random() * 1000000);
 
     shoppingList.push(item);
 
@@ -52,8 +52,8 @@ app.post('/shopping-list', async (req, res) => {
 })
 
 app.delete('/shopping-list', async (req, res) => {
-    const { id } = req.body;
-    shoppingList = shoppingList.filter(item => item.id !== id);
+    const { product_id } = req.body;
+    shoppingList = shoppingList.filter(item => item.product_id !== product_id);
     await save();
     res.status(200).json({ message: 'Item deleted' });
 })

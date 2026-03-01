@@ -1,20 +1,22 @@
-import { createFileRoute } from '@tanstack/react-router'
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import { AddProductForm } from '../components/addproduct';
-import { FiRefreshCcw, FiTrash } from 'react-icons/fi';
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { createFileRoute } from "@tanstack/react-router";
+import { FiRefreshCcw, FiTrash } from "react-icons/fi";
 
-export const Route = createFileRoute('/groceries')({
+import { AddProductForm } from "../components/addproduct";
+
+export const Route = createFileRoute("/groceries")({
   component: RouteComponent,
-})
+});
 
-type Product = { id: number, name: string, price: number };
+type Product = { product_id: number; name: string; tags: string[]; };
 
 function RouteComponent() {
   const { data, refetch } = useQuery({
-    queryKey: ['shopping-list'],
+    queryKey: ["shopping-list"],
     queryFn: async () => {
-      const result = await fetch('http://localhost:3000/shopping-list')
-      return result.json() as Promise<Product[]>
+      const result = await fetch("http://localhost:3000/shopping-list");
+
+      return result.json() as Promise<Product[]>;
     },
   });
 
@@ -27,36 +29,41 @@ function RouteComponent() {
       </button>
       <ul className="">
         {
-          data?.map((product) => (
-            <ProductItem key={product.id} product={product} />
+          data?.map(product => (
+            <ProductItem key={product.product_id} product={product} />
           ))
         }
       </ul>
-    </div>);
+    </div>
+  );
 }
 
-const ProductItem = (props: { product: Product }) => {
-  const queryClient = useQueryClient()
+const ProductItem = (props: { product: Product; }) => {
+  const queryClient = useQueryClient();
   const { mutate } = useMutation({
-    mutationFn: async (product: { id: number }) => {
-      const result = await fetch('http://localhost:3000/shopping-list', {
-        method: 'DELETE',
+    mutationFn: async (product: { product_id: number; }) => {
+      const result = await fetch("http://localhost:3000/shopping-list", {
+        method: "DELETE",
         body: JSON.stringify(product),
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
-      })
-      return result.json()
+      });
+
+      return result.json();
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['shopping-list'] })
+      queryClient.invalidateQueries({ queryKey: ["shopping-list"] });
     },
-  })
+  });
 
   return (
-    <li key={props.product.id} className='text-gray-700 flex justify-between py-2 px-2 mt-2 odd:bg-gray-100 items-center border border-gray-300 rounded-md'>
-      {props.product.name} - {props.product.price}
-      <button className="p-2 cursor-pointer rounded-md hover:bg-red-400 hover:text-white active:translate-y-0.5" onClick={() => mutate({ id: props.product.id })}><FiTrash className="text-gray-700" /></button>
+    <li key={props.product.product_id} className="text-gray-700 flex justify-between py-2 px-2 mt-2 odd:bg-gray-100 items-center border border-gray-300 rounded-md">
+      {props.product.name}
+      {" "}
+      -
+      {props.product.tags?.join(", ")}
+      <button className="p-2 cursor-pointer rounded-md hover:bg-red-400 hover:text-white active:translate-y-0.5" onClick={() => mutate({ product_id: props.product.product_id })}><FiTrash className="text-gray-700" /></button>
     </li>
-  )
-}
+  );
+};
