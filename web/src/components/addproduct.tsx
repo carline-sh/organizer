@@ -22,13 +22,15 @@ export const AddProductForm = () => {
     const [price, setPrice] = useState(0)
 
     return (
-        <form className="border p-2 flex flex-col gap-2" onSubmit={(e) => {
+        <form className="py-2 text-gray-700" onSubmit={(e) => {
             e.preventDefault()
             mutate({ name, price })
         }}>
-            <input type="text" placeholder="Name" className="border p-2" value={name} onChange={(e) => setName(e.target.value)} />
-            <input type="number" placeholder="Price" className="border p-2" value={price} onChange={(e) => setPrice(parseFloat(e.target.value))} />
-            <button type="submit" className="bg-blue-500 text-white p-2">Add</button>
+            <div className="flex flex-col gap-2 rounded-md p-2">
+                <input type="text" placeholder="Name" className="border border-gray-300 rounded-md p-2 flex-1" value={name} onChange={(e) => setName(e.target.value)} />
+                <input type="number" placeholder="Price" className="border border-gray-300 rounded-md p-2 flex-1" value={price} onChange={(e) => setPrice(parseFloat(e.target.value))} />
+                <button type="submit" className="bg-cyan-700 text-white p-2 rounded-md cursor-pointer hover:bg-cyan-800 active:translate-y-0.5">Add</button>
+            </div>
         </form>
     )
 }

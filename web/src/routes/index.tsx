@@ -1,7 +1,7 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { AddProductForm } from '../components/addproduct';
-import { FiTrash } from 'react-icons/fi';
+import { FiRefreshCcw, FiTrash } from 'react-icons/fi';
 
 export const Route = createFileRoute('/')({
   component: RouteComponent,
@@ -19,11 +19,13 @@ function RouteComponent() {
   });
 
   return (
-    <div>
+    <div className="border border-gray-300 rounded-md p-2">
       <AddProductForm />
-      Hello "/"!
-      <button onClick={() => refetch()}>Refetch</button>
-      <ul className="border">
+      <hr className="my-2 border-cyan-400" />
+      <button className="rounded-md p-2 border border-gray-300 text-gray-600 cursor-pointer hover:bg-gray-100 active:translate-y-0.5" onClick={() => refetch()}>
+        <FiRefreshCcw />
+      </button>
+      <ul className="">
         {
           data?.map((product) => (
             <ProductItem key={product.id} product={product} />
@@ -52,9 +54,9 @@ const ProductItem = (props: { product: Product }) => {
   })
 
   return (
-    <li key={props.product.id} className='flex justify-between py-2 px-2 odd:bg-gray-100'>
+    <li key={props.product.id} className='text-gray-700 flex justify-between py-2 px-2 mt-2 odd:bg-gray-100 items-center border border-gray-300 rounded-md'>
       {props.product.name} - {props.product.price}
-      <button onClick={() => mutate({ id: props.product.id })}><FiTrash /></button>
+      <button className="p-2 cursor-pointer rounded-md hover:bg-red-400 hover:text-white active:translate-y-0.5" onClick={() => mutate({ id: props.product.id })}><FiTrash className="text-gray-700" /></button>
     </li>
   )
 }
