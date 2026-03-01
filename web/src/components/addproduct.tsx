@@ -1,12 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 
-// eslint-disable-next-line react-refresh/only-export-components
-export const TAGS = [
-  { name: "Supermarkt", value: "supermarkt", color: "bg-pink-400" },
-  { name: "General", value: "general", color: "bg-purple-700" },
-  { name: "Drinks", value: "drinks", color: "bg-green-700" },
-];
+import { TAGS } from "../util/tags";
 
 export const AddProductForm = () => {
   const queryClient = useQueryClient();

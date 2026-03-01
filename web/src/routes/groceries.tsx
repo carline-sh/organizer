@@ -2,7 +2,8 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import { FiRefreshCcw, FiTrash } from "react-icons/fi";
 
-import { AddProductForm, TAGS } from "../components/addproduct";
+import { AddProductForm } from "../components/addproduct";
+import { TAGS } from "../util/tags";
 
 export const Route = createFileRoute("/groceries")({
   component: RouteComponent,
