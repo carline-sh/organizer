@@ -19,7 +19,7 @@ const loadShoppingList = () => {
     }
 };
 
-const shoppingList = loadShoppingList();
+let shoppingList = loadShoppingList();
 
 const save = async () => {
     await writeFile('shopping-list.json', JSON.stringify(shoppingList, null, 2));
@@ -42,12 +42,20 @@ app.post('/shopping-list', async (req, res) => {
     // add the thing to shoppinglist
 
     const item = req.body;
+    item.id = Math.round(Math.random() * 1000000);
 
     shoppingList.push(item);
 
     await save();
 
     res.status(201).json(item);
+})
+
+app.delete('/shopping-list', async (req, res) => {
+    const { id } = req.body;
+    shoppingList = shoppingList.filter(item => item.id !== id);
+    await save();
+    res.status(200).json({ message: 'Item deleted' });
 })
 
 app.listen(3000, () => {
