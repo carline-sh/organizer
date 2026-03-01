@@ -1,9 +1,10 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 
-const tags = [
-  { name: "Supermarkt", value: "supermarkt", color: "bg-yellow-500" },
-  { name: "General", value: "general", color: "bg-amber-700" },
+// eslint-disable-next-line react-refresh/only-export-components
+export const TAGS = [
+  { name: "Supermarkt", value: "supermarkt", color: "bg-pink-400" },
+  { name: "General", value: "general", color: "bg-purple-700" },
   { name: "Drinks", value: "drinks", color: "bg-green-700" },
 ];
 
@@ -39,8 +40,8 @@ export const AddProductForm = () => {
       <div className="flex flex-col gap-2 rounded-md p-2">
         <input type="text" placeholder="Name" className="border border-gray-300 rounded-md p-2 flex-1" value={name} onChange={e => setName(e.target.value)} />
 
-        <div className="flex flex-wrap gap-2">
-          {tags.map(tag => (
+        <div className="flex flex-wrap gap-2 text-white">
+          {TAGS.map(tag => (
             <button
               key={tag.value}
               type="button"

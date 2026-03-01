@@ -2,7 +2,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import { FiRefreshCcw, FiTrash } from "react-icons/fi";
 
-import { AddProductForm } from "../components/addproduct";
+import { AddProductForm, TAGS } from "../components/addproduct";
 
 export const Route = createFileRoute("/groceries")({
   component: RouteComponent,
@@ -59,11 +59,23 @@ const ProductItem = (props: { product: Product; }) => {
 
   return (
     <li key={props.product.product_id} className="text-gray-700 flex justify-between py-2 px-2 mt-2 odd:bg-gray-100 items-center border border-gray-300 rounded-md">
-      {props.product.name}
-      {" "}
-      -
-      {props.product.tags?.join(", ")}
-      <button className="p-2 cursor-pointer rounded-md hover:bg-red-400 hover:text-white active:translate-y-0.5" onClick={() => mutate({ product_id: props.product.product_id })}><FiTrash className="text-gray-700" /></button>
+      <div>
+        {props.product.name}
+
+      </div>
+      <div className="flex gap-2 items-center">
+        {props.product.tags?.map((tag) => {
+          const tagConfig = TAGS.find(t => t.value === tag);
+
+          return (
+            <span key={tag} className={`border text-xs px-1 py-0.5 bg-gray-100 rounded-md text-white ${tagConfig?.color}`}>
+              {tag}
+            </span>
+          );
+        })}
+
+        <button className="p-2 cursor-pointer rounded-md hover:bg-red-400 hover:text-white active:translate-y-0.5" onClick={() => mutate({ product_id: props.product.product_id })}><FiTrash className="text-gray-700" /></button>
+      </div>
     </li>
   );
 };
