@@ -9,7 +9,7 @@ export const Route = createFileRoute("/recipes")({
 type Recipe = { recipe_id: number; name: string; url: string; };
 
 function RouteComponent() {
-  const { data, refetch } = useQuery({
+  const { data } = useQuery({
     queryKey: ["recipes"],
     queryFn: async () => {
       const result = await fetch("http://localhost:3000/recipes");
@@ -38,23 +38,29 @@ function RouteComponent() {
 
   return (
     <div className="border border-gray-300 rounded-md py-4 px-4">
-      <div className="border border-gray-300 rounded-md mt-2 flex items-center gap-2">
-        <input type="text" placeholder="Search recipes" className=" rounded-md p-2 w-full" />
-        <div className="p-2">
-          <LuSearch className="text-gray-700" />
+      <div className="flex gap-2">
+        <div className="mt-2 flex gap-2 w-2/3">
+          <input type="text" placeholder="https://url.com" className="rounded-md p-2 w-full border border-gray-300" />
+          <button
+            className="rounded-md p-2 border whitespace-pre text-white cursor-pointer bg-cyan-700 hover:bg-cyan-800 active:translate-y-0.5"
+            onClick={() => mutate({ name: "New Recipe", url: "https://www.google.com" })}
+          >
+            Add Recipe
+          </button>
         </div>
       </div>
       <hr className="my-2 border-cyan-400" />
-      <h1 className="text-2xl color-gray-700"></h1>
-      <button
-        className="rounded-md p-2 border border-gray-300 text-gray-600 cursor-pointer hover:bg-gray-100 active:translate-y-0.5"
-        onClick={() => mutate({ name: "New Recipe", url: "https://www.google.com" })}
-      >
-        Add Recipe
-      </button>
+      <div className="w-full flex justify-end">
+        <div className="flex justify-end border border-gray-300 rounded-md items-center gap-2">
+          <input type="text" placeholder="Search recipes" className=" rounded-md p-2 w-full" />
+          <div className="p-2">
+            <LuSearch className="text-gray-700" />
+          </div>
+        </div>
+      </div>
       {data?.map(recipe => (
-        <div key={recipe.recipe_id}>
-          <h2>{recipe.name}</h2>
+        <div className="border border-gray-300 text-gray-700 rounded-md p-2 mt-2 odd:bg-gray-100" key={recipe.recipe_id}>
+          <h2 className="font-bold">{recipe.name}</h2>
           <p>{recipe.url}</p>
         </div>
       ))}
