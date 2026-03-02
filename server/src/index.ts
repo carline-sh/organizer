@@ -4,6 +4,7 @@ import { writeFile } from 'fs/promises';
 import { readFileSync } from 'fs';
 
 type Product = { product_id: number, name: string, tags: string[] };
+type Recipe = { recipe_id: number, name: string, url: string };
 
 const loadShoppingList = () => {
     try {
@@ -19,10 +20,25 @@ const loadShoppingList = () => {
     }
 };
 
-let shoppingList = loadShoppingList();
+const loadRecipes = () => {
+    try {
+        const data = readFileSync('recipes.json', 'utf-8');
+        return JSON.parse(data) as Recipe[];
+    } catch (error) {
+        console.error('Failed to load recipes', error);
+        return [];
+    }
+};
 
-const save = async () => {
+let shoppingList = loadShoppingList();
+let recipes = loadRecipes();
+
+const saveShoppinglist = async () => {
     await writeFile('shopping-list.json', JSON.stringify(shoppingList, null, 2));
+};
+
+const saveRecipes = async () => {
+    await writeFile('recipes.json', JSON.stringify(recipes, null, 2));
 };
 
 const app = express()
@@ -46,7 +62,7 @@ app.post('/shopping-list', async (req, res) => {
 
     shoppingList.push(item);
 
-    await save();
+    await saveShoppinglist();
 
     res.status(201).json(item);
 })
@@ -54,9 +70,34 @@ app.post('/shopping-list', async (req, res) => {
 app.delete('/shopping-list', async (req, res) => {
     const { product_id } = req.body;
     shoppingList = shoppingList.filter(item => item.product_id !== product_id);
-    await save();
+    await saveShoppinglist();
     res.status(200).json({ message: 'Item deleted' });
 })
+
+app.get('/recipes', (req, res) => {
+    res.json(recipes)
+})
+
+app.post('/recipes', async (req, res) => {
+    // add the thing to shoppinglist
+
+    const item = req.body;
+    item.recipe_id = Math.round(Math.random() * 1000000);
+
+    recipes.push(item);
+
+    await saveRecipes();
+
+    res.status(201).json(item);
+})
+
+app.delete('/recipes', async (req, res) => {
+    const { recipe_id } = req.body;
+    recipes = recipes.filter(item => item.recipe_id !== recipe_id);
+    await saveRecipes();
+    res.status(200).json({ message: 'Item deleted' });
+})
+
 
 app.listen(3000, () => {
     console.log('Server is running on port 3000')
