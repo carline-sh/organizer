@@ -14,6 +14,8 @@
     "@tanstack/react-query": "^5.90.21",
     "@tanstack/react-router": "^1.163.2",
     "eslint-plugin-v3xlabs": "^1.7.14",
+    "open-graph-scraper": "^6.11.0",
+    "open-graph-scraper-lite": "^2.1.0",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "react-icons": "^5.5.0",

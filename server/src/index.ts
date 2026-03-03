@@ -2,9 +2,10 @@ import cors from 'cors'
 import express from 'express'
 import { writeFile } from 'fs/promises';
 import { readFileSync } from 'fs';
+import openGraphScraper from 'open-graph-scraper';
 
 type Product = { product_id: number, name: string, tags: string[] };
-type Recipe = { recipe_id: number, name: string, url: string };
+type Recipe = { recipe_id: number, name: string, url: string, image: string, description: string };
 
 const loadShoppingList = () => {
     try {
@@ -96,6 +97,12 @@ app.delete('/recipes', async (req, res) => {
     recipes = recipes.filter(item => item.recipe_id !== recipe_id);
     await saveRecipes();
     res.status(200).json({ message: 'Item deleted' });
+})
+
+app.get('/scrape', async (req, res) => {
+    const { url } = req.query as { url: string };
+    const result = await openGraphScraper({ url });
+    res.json(result);
 })
 
 
