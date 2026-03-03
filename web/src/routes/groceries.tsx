@@ -22,7 +22,7 @@ function RouteComponent() {
   });
 
   return (
-    <div className="border border-gray-300 rounded-md p-2">
+    <div className="border border-gray-300 rounded-md p-4">
       <AddProductForm />
       <hr className="my-2 border-cyan-400" />
       <button className="rounded-md p-2 border border-gray-300 text-gray-600 cursor-pointer hover:bg-gray-100 active:translate-y-0.5" onClick={() => refetch()}>

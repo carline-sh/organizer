@@ -26,13 +26,13 @@ export const AddProductForm = () => {
 
   return (
     <form
-      className="py-2 text-gray-700"
+      className=" text-gray-700"
       onSubmit={(e) => {
         e.preventDefault();
         mutate({ name, tags: selectedTags });
       }}
     >
-      <div className="flex flex-col gap-2 rounded-md p-2">
+      <div className="flex flex-col gap-2 rounded-md">
         <input type="text" placeholder="Name" className="border border-gray-300 rounded-md p-2 flex-1" value={name} onChange={e => setName(e.target.value)} />
 
         <div className="flex flex-wrap gap-2 text-white">
@@ -57,7 +57,7 @@ export const AddProductForm = () => {
           ))}
         </div>
 
-        <button type="submit" className="bg-cyan-700 text-white p-2 rounded-md cursor-pointer hover:bg-cyan-800 active:translate-y-0.5">Add</button>
+        <button type="submit" className="bg-cyan-700 text-white p-2 rounded-md cursor-pointer hover:bg-cyan-800 active:translate-y-0.5">Add list item</button>
       </div>
     </form>
   );
