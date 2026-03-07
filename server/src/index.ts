@@ -6,6 +6,7 @@ import openGraphScraper from 'open-graph-scraper';
 
 type Product = { product_id: number, name: string, tags: string[] };
 type Recipe = { recipe_id: number, name: string, url: string, image: string, description: string };
+type DatePlanning = { day: string, recipe_id: string | undefined, note: string | undefined }
 
 const loadShoppingList = () => {
     try {
@@ -31,8 +32,19 @@ const loadRecipes = () => {
     }
 };
 
+const loadDatePlanning = () => {
+    try {
+        const data = readFileSync('date-planning.json', 'utf-8');
+        return JSON.parse(data) as DatePlanning[];
+    } catch (error) {
+        console.error('Failed to load date planning', error);
+        return [];
+    }
+};
+
 let shoppingList = loadShoppingList();
 let recipes = loadRecipes();
+let datePlanning = loadDatePlanning();
 
 const saveShoppinglist = async () => {
     await writeFile('shopping-list.json', JSON.stringify(shoppingList, null, 2));
@@ -40,6 +52,10 @@ const saveShoppinglist = async () => {
 
 const saveRecipes = async () => {
     await writeFile('recipes.json', JSON.stringify(recipes, null, 2));
+};
+
+const saveDatePlanning = async () => {
+    await writeFile('date-planning.json', JSON.stringify(datePlanning, null, 2));
 };
 
 const app = express()
