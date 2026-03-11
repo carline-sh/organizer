@@ -1,9 +1,9 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 
-import { GROCERY_TAGS } from "../util/tags";
+import { STOCK_TAGS } from "../util/tags";
 
-export const AddProductForm = () => {
+export const AddStockForm = () => {
   const queryClient = useQueryClient();
   const { mutate } = useMutation({
     mutationFn: async (product: { name: string; tags: string[]; }) => {
@@ -36,7 +36,7 @@ export const AddProductForm = () => {
         <input type="text" placeholder="Name" className="border border-gray-300 rounded-md p-2 flex-1" value={name} onChange={e => setName(e.target.value)} />
 
         <div className="flex flex-wrap gap-2 text-white">
-          {GROCERY_TAGS.map(tag => (
+          {STOCK_TAGS.map(tag => (
             <button
               key={tag.value}
               type="button"

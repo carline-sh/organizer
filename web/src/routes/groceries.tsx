@@ -3,7 +3,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { FiRefreshCcw, FiTrash } from "react-icons/fi";
 
 import { AddProductForm } from "../components/addproduct";
-import { TAGS } from "../util/tags";
+import { GROCERY_TAGS } from "../util/tags";
 
 export const Route = createFileRoute("/groceries")({
   component: RouteComponent,
@@ -66,7 +66,7 @@ const ProductItem = (props: { product: Product; }) => {
       </div>
       <div className="flex gap-2 items-center">
         {props.product.tags?.map((tag) => {
-          const tagConfig = TAGS.find(t => t.value === tag);
+          const tagConfig = GROCERY_TAGS.find(t => t.value === tag);
 
           return (
             <span key={tag} className={`border text-xs px-1 py-0.5 bg-gray-100 rounded-md text-white ${tagConfig?.color}`}>
