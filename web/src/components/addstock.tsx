@@ -6,10 +6,10 @@ import { STOCK_TAGS } from "../util/tags";
 export const AddStockForm = () => {
   const queryClient = useQueryClient();
   const { mutate } = useMutation({
-    mutationFn: async (product: { name: string; tags: string[]; }) => {
-      const result = await fetch("http://localhost:3000/shopping-list", {
+    mutationFn: async (stock: { name: string; tags: string[]; }) => {
+      const result = await fetch("http://localhost:3000/stock", {
         method: "POST",
-        body: JSON.stringify(product),
+        body: JSON.stringify(stock),
         headers: {
           "Content-Type": "application/json",
         },
@@ -18,7 +18,7 @@ export const AddStockForm = () => {
       return result.json();
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["shopping-list"] });
+      queryClient.invalidateQueries({ queryKey: ["stock"] });
     },
   });
   const [name, setName] = useState("");

@@ -6,7 +6,8 @@ import openGraphScraper from 'open-graph-scraper';
 
 type Product = { product_id: number, name: string, tags: string[] };
 type Recipe = { recipe_id: number, name: string, url: string, image: string, description: string };
-type DatePlanning = { day: string, recipe_id: string | undefined, note: string | undefined }
+type DatePlanning = { day: string, recipe_id: string | undefined, note: string | undefined };
+type Stock = { stock_id: number, name: string, tags: string[] };
 
 const loadShoppingList = () => {
     try {
@@ -42,10 +43,19 @@ const loadDatePlanning = () => {
     }
 };
 
+const loadStock = () => {
+    try {
+        const data = readFileSync('stock.json', 'utf-8');
+        return JSON.parse(data) as Stock[];
+    } catch (error) {
+        console.error('Failed to load stock', error);
+        return [];
+    }
+};
 let shoppingList = loadShoppingList();
 let recipes = loadRecipes();
 let datePlanning = loadDatePlanning();
-
+let stock = loadStock();
 const saveShoppinglist = async () => {
     await writeFile('shopping-list.json', JSON.stringify(shoppingList, null, 2));
 };
@@ -56,6 +66,10 @@ const saveRecipes = async () => {
 
 const saveDatePlanning = async () => {
     await writeFile('date-planning.json', JSON.stringify(datePlanning, null, 2));
+};
+
+const saveStock = async () => {
+    await writeFile('stock.json', JSON.stringify(stock, null, 2));
 };
 
 const app = express()
@@ -114,6 +128,29 @@ app.delete('/recipes', async (req, res) => {
     await saveRecipes();
     res.status(200).json({ message: 'Item deleted' });
 })
+
+app.get('/stock', (req, res) => {
+    res.json(stock)
+})
+
+app.post('/stock', async (req, res) => {
+    const item = req.body;
+    stock.push(item);
+    await saveStock();
+    res.status(201).json(item);
+})
+
+app.delete('/stock', async (req, res) => {
+    const { stock_id } = req.body;
+    stock = stock.filter(item => item.stock_id !== stock_id);
+    await saveStock();
+    res.status(200).json({ message: 'Item deleted' });
+})
+
+
+
+
+
 
 app.get('/scrape', async (req, res) => {
     const { url } = req.query as { url: string };
